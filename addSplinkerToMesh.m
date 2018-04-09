@@ -7,10 +7,13 @@ function S = addSplinkerToMesh(Z, X, Y, flowCapacity, radius, x, y, startAngle, 
     H = ones(n,m);
 
     if startAngle ~= endAngle
+        if endAngle < startAngle
+            endAngle = endAngle + 360;
+        end
         for c = 1:m
             for r = 1:n
                 [theta, ~] = cart2pol(X(r,c) - x, Y(r,c) - y);
-                if theta < 0
+                if theta < startAngle/180*pi
                     theta = theta + 2*pi;
                 end
                 if theta < (startAngle/180*pi) || theta > (endAngle/180*pi)
