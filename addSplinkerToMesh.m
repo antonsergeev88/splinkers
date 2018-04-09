@@ -1,4 +1,4 @@
-function S = addSplinkerToMesh(Z, X, Y, flowCapacity, radius, x, y, startAngle, endAngle)
+function S = addSplinkerToMesh(Z, X, Y, flowCapacity, radius, x, y, startAngle, endAngle, trees)
     height = 3 * flowCapacity / pi / radius^2;
     
     fullCircle = height * max(1 - sqrt((X - x).^2 + (Y - y).^2)/radius, 0) * 1000;
@@ -22,5 +22,35 @@ function S = addSplinkerToMesh(Z, X, Y, flowCapacity, radius, x, y, startAngle, 
             end
         end
     end
-    S = Z + fullCircle .* H;
+    
+    S = fullCircle .* H;
+    
+    treesCount = length(trees(:,1));
+    for i = 1:treesCount
+        treeX = trees(i,1);
+        treeY = trees(i,2);
+        treeRadius = trees(i,3);
+        [treeTheta, treeRo] = cart2pol(treeX - x, treeY - y);
+        alpha = asin(treeRadius/treeRo);
+        treeStartAngle = treeTheta - alpha;
+        treeEndAngle = treeTheta + alpha;
+        TH = ones(n,m);
+        for c = 1:m
+            for r = 1:n
+                [theta, ro] = cart2pol(X(r,c) - x, Y(r,c) - y);
+                if (theta > treeStartAngle && theta < treeEndAngle) && ro > treeRo
+                    TH(r,c) = 0;
+                end
+                [~, roInTree] = cart2pol(X(r,c) - treeX, Y(r,c) - treeY);
+                if roInTree < treeRadius
+                    TH(r,c) = 0;
+                end
+            end
+        end
+        S = S .* TH;
+    end
+    
+    
+    
+    S = S + Z;
 end
