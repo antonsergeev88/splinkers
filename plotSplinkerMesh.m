@@ -7,7 +7,9 @@ function plotSplinkerMesh(width, height, splinkers)
         radius = splinker(2);
         x = splinker(3);
         y = splinker(4);
-        Z = addSplinkerToMesh(Z, X, Y, flowCapacity, radius, x, y);
+        startAngle = splinker(5);
+        endAngle = splinker(6);
+        Z = addSplinkerToMesh(Z, X, Y, flowCapacity, radius, x, y, startAngle, endAngle);
     end
     surf(X, Y, Z, 'EdgeColor', 'none');
 end
