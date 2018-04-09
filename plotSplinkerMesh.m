@@ -1,4 +1,4 @@
-function plotSplinkerMesh(width, height, splinkers)
+function plotSplinkerMesh(width, height, splinkers, trees)
     [X, Y, Z] = splinkerMesh(width, height);
     splinkerCount = length(splinkers(:,1));
     for i = 1:splinkerCount
@@ -9,7 +9,7 @@ function plotSplinkerMesh(width, height, splinkers)
         y = splinker(4);
         startAngle = splinker(5);
         endAngle = splinker(6);
-        Z = addSplinkerToMesh(Z, X, Y, flowCapacity, radius, x, y, startAngle, endAngle);
+        Z = addSplinkerToMesh(Z, X, Y, flowCapacity, radius, x, y, startAngle, endAngle, trees);
     end
     surf(X, Y, Z, 'EdgeColor', 'none');
 end
